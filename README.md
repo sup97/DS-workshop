@@ -37,5 +37,4 @@ Type the following in your command line:
 ### Get the last 10 top tweets by username
     python Exporter.py --username "barackobama" --maxtweets 10 --toptweets
 
-## Clean data
-Open the data in R
+## Move to text_analysis.Rmd
