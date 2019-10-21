@@ -24,6 +24,7 @@ Let's move to "GetOldTweets-python-master" folder.
 ## Collect tweets
 We will first install required packages
 Type the following in your command line:
+
     pip install -r requirements.txt
 ### Get help use
     python Exporter.py -h
