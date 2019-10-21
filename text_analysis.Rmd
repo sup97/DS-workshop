@@ -1,0 +1,133 @@
+---
+title: "Data Scraping Workshop"
+author: "So Young Park"
+date: "October 21, 2019"
+output: pdf_document
+---
+
+```{r load environment}
+install.packages(c("tidyverse", "lubridate", "ggplot2", "readr", "tidytext", "stringr", "scales", "readxl", "quanteda", "xtable", "htmlwidgets", "webshot"))
+
+library(tidyverse)
+library(lubridate)
+library(ggplot2)
+library(readr)
+library(tidytext)
+library(stringr)
+library(scales)
+library(readxl)
+library(quanteda)
+library(xtable)
+library(htmlwidgets)
+library(webshot)
+```
+
+#Read in data
+```{r merge data}
+rm(list=ls()) #removes any pre-existing data list
+
+getwd() #get working directory
+ 
+setwd("")
+
+data <- read_csv("C:/Users/sup97/Box Sync/Dissertation/Data/data_2019/csv files/orphanage_volunteer.csv")
+
+View(data) #look at the data
+
+names(data) # column names
+
+head(data) # first few rows
+```
+
+```{r wordcloud function}
+library(wordcloud2)
+wordCloud <- function(filename){
+  wordcloud2(data=filename, size = 1, minSize = 0, gridSize =  0,
+    fontFamily = 'Segoe UI', fontWeight = 'bold',
+    color = 'random-dark', backgroundColor = "white",
+    minRotation = -pi/4, maxRotation = pi/4, shuffle = TRUE,
+    rotateRatio = 0.4, shape = 'circle', ellipticity = 0.65,
+    widgetsize = NULL, figPath = NULL, hoverFunction = NULL)
+}
+```
+
+#Remove stop words
+```{r clean data}
+data$text <- tolower(iconv(data$text, "UTF-8")) #make data lowercase
+
+#if you need to filter any data that contain certain words
+data <- data %>%
+  filter(!str_detect(text, "elephant"))
+
+replace_reg <- "https://t.co/[A-Za-z\\d]+|http://[A-Za-z\\d]+|&amp;|&lt;|&gt;|RT|https"
+unnest_reg <- "([^A-Za-z_\\d#@']|'(?![A-Za-z_\\d#@]))"
+
+keywords <- c("") #list of keywords that you want removed from your word frequency
+
+data(stop_words) #load stop words
+glimpse(stop_words)
+#write.csv(cleaned_data, file="cleaned_data.csv") #save csv
+```
+
+#Simple frequency
+```{r simple frequency uni-gram & bi-gram}
+##unigram
+cleaned_data <- data
+cleaned_data$text <- tokens(data$text, remove_puct=TRUE, remove_numbers=TRUE, remove_symbols=TRUE, remove_url=TRUE) %>%
+    tokens_remove("\\p{P}", valuetype = "regex", padding = TRUE) %>%
+    tokens_remove(stopwords("english"), padding  = TRUE) %>%
+    tokens_remove(keywords, padding  = TRUE) %>%
+    tokens_remove(replace_reg, padding  = TRUE) %>%
+    tokens_ngrams(n = 1) %>%
+    dfm()
+
+textstat_lexdiv(cleaned_data$text)
+textstat_frequency(cleaned_data$text)
+head(cleaned_data$text)
+
+freq <- tbl_df(textstat_frequency(cleaned_data$text)) #need frequency info
+freq <- freq[order(-freq$frequency),] #sort decreasing
+head(freq)
+
+top20 <- freq[1:20,] #top 20 words
+
+uni_gram <- ggplot(top20, aes(x=reorder(feature,frequency), frequency))+
+  geom_col()+
+  xlab("word")+
+  coord_flip()
+
+uni_gram
+```
+
+```{r}
+##bigram
+cleaned_data2 <- data
+cleaned_data2$text <- tokens(data$text, remove_puct=TRUE, remove_numbers=TRUE, remove_symbols=TRUE, remove_url=TRUE) %>%
+    tokens_remove("\\p{P}", valuetype = "regex", padding = TRUE) %>%
+    tokens_remove(stopwords("english"), padding  = TRUE) %>%
+    tokens_remove(keywords, padding  = TRUE) %>%
+    tokens_remove(replace_reg, padding  = TRUE) %>%
+    tokens_ngrams(n = 2) %>%
+    dfm()
+
+textstat_lexdiv(cleaned_data2$text)
+textstat_frequency(cleaned_data2$text)
+head(cleaned_data2$text)
+freq2 <- tbl_df(textstat_frequency(cleaned_data2$text)) #need frequency info
+
+freq2 <- tbl_df(textstat_frequency(cleaned_data2$text)) #need frequency info
+freq2 <- freq2[order(-freq2$frequency),] #sort decreasing
+head(freq2)
+
+top20 <- freq2[1:20,] #top 20 words
+
+bi_gram <- ggplot(top20, aes(x=reorder(feature,frequency), frequency))+
+  geom_col()+
+  xlab("word")+
+  coord_flip()
+
+bi_gram
+
+```
+
+
