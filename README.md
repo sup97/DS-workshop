@@ -29,12 +29,12 @@ Type the following in your command line:
 ### Get help use
     python Exporter.py -h
 ### Get tweets by username
-    python Exporter.py --username "barackobama" --maxtweets 1
+    python Exporter.py --username "PennStateRPTM" --maxtweets 1
 ### Get tweets by query search
-    python Exporter.py --querysearch "europe refugees" --maxtweets 1
+    python Exporter.py --querysearch "penn state RPTM" --maxtweets 1
 ### Get tweets by username and bound dates
-    python Exporter.py --username "barackobama" --since 2015-09-10 --until 2015-09-12 --maxtweets 1
+    python Exporter.py --username "PennStateRPTM" --since 2019-09-10 --until 2019-09-12 --maxtweets 1
 ### Get the last 10 top tweets by username
-    python Exporter.py --username "barackobama" --maxtweets 10 --toptweets
+    python Exporter.py --username "PennStateRPTM" --maxtweets 10 --toptweets
 
 ## Move to text_analysis.Rmd
