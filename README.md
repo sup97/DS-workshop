@@ -11,21 +11,33 @@ Before we start the workshop, let's make sure that everyone has Python on their 
 We will be using Python 2.7
 If you don't have Python on your computer, please follow the link and download https://www.python.org/downloads/
 
-After you donwload the Python, please download the files onto your computer and move the file to Documents.
+After you donwload the Python, please download the files onto your computer and move the file to "Documents".
 
 Then we will open "terminal" OR "PowerShell".
 We will move our location to where we downloaded the files.
 You can type "cd LOCATIONAME" to move to the location.
-
-When at the location, type "ls" to see the list of files in the directory.
-You should be able to see "GetOldTweets-python-master" and "text_analysis.Rmd"
 Let's move to "GetOldTweets-python-master" folder.
+
+    cd Documents/DS-workshop-master/GetOldTweets-python-master
+
+When at the location, type "ls" or "dir" to see the list of files in the directory.
+You should be able to see "Exporter.py".
+
+Type and enter "python" on your command line to see which version you have. If you have version 3, please try the below:
+    
+    conda create -n python2p7 python=2.7
+    source activate python 2p7
+(You can deactivate Python 2 by "source deactivate")
+
+If python does not run at all on your Powershell, please refer to following :https://www.quora.com/Why-wont-Python-work-in-PowerShell-for-me
 
 ## Collect tweets
 We will first install required packages
 Type the following in your command line:
 
     pip install -r requirements.txt
+    
+If pip is not recognized, please try following: https://pip.pypa.io/en/stable/installing/
 ### Get help use
     python Exporter.py -h
 ### Get tweets by username
