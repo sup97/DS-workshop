@@ -26,7 +26,7 @@ You should be able to see "Exporter.py".
 Type and enter "python" on your command line to see which version you have. If you have version 3, please try the below:
     
     conda create -n python2p7 python=2.7
-    source activate python 2p7
+    source activate python2p7
 (You can deactivate Python 2 by "source deactivate")
 
 If python does not run at all on your Powershell, please refer to following :https://www.quora.com/Why-wont-Python-work-in-PowerShell-for-me
